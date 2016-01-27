@@ -1,0 +1,42 @@
+#spamd
+
+if ( RunCommand( Cmd => "/usr/sbin/rcctl get spamd status" ) >> 8 == 1 )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl set spamd status on" );
+}
+
+
+if ( RunCommand( Cmd => "/usr/sbin/rcctl check spamd" ) >> 8 == 1 )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl start spamd" );
+}
+
+#snmpd
+
+if ( RunCommand( Cmd => "/usr/sbin/rcctl get smtpd status" ) >> 8 == 1 )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl set smtpd status on" );
+}
+
+if ( FetchFile(Source => "/services/mail/ideasyncratic",
+  Dest   => "/etc/mail/ideasyncratic",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "644",
+  Expand => "false",
+  Backup => "false") )
+{
+  RunCommand( Cmd => "/usr/sbin/makemap -t aliases /etc/mail/ideasyncratic" );
+}
+
+if ( FetchFile(Source => "/services/mail/smtpd.conf",
+  Dest   => "/etc/mail/smtpd.conf",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "644",
+  Expand => "false",
+  Backup => "false") )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl restart smtpd" );
+}
+

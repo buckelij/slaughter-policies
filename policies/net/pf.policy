@@ -1,0 +1,13 @@
+`/usr/bin/touch /etc/mail/nospamd`;
+`/bin/chmod go-rwx /etc/mail/nospamd`;
+
+if ( FetchFile(Source => "/pf/pf.conf",
+  Dest   => "/etc/pf.conf",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "600",
+  Expand => "false",
+  Backup => "false") )
+{
+  RunCommand( Cmd => "/sbin/pfctl -f /etc/pf.conf" );
+}

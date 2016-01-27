@@ -1,0 +1,31 @@
+set realname="Elijah Buck"
+set from="buckelij@ideasyncratic.net"
+set use_from=yes
+set use_envelope_from=yes
+set folder=~/mail
+set sort="threads"
+set strict_threads="yes"
+set sort_browser="reverse-date"
+set sort_aux="last-date-received"
+unset collapse_unread
+bind index - collapse-thread
+bind index _ collapse-all
+set mailcap_path 	= ~/.mutt/mailcap
+auto_view text/html
+
+
+#---- Mutt Colors for White Background -------
+color    hdrdefault    black           default
+color    quoted        red             default
+color    signature     brightblack     default
+color    indicator     brightwhite     red
+color    attachment    black           default
+color    error         red             default
+color    message       black           default
+color    search        brightwhite     magenta
+color    status        brightyellow    blue
+color    tree          red             default
+color    normal        black            default
+color    tilde         green           default
+color    bold          brightyellow    default
+color    markers       red             default

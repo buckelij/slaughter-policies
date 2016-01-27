@@ -1,0 +1,21 @@
+if (!PackageInstalled(Package => "rsync--")) {
+  InstallPackage(Package => "rsync--");
+}
+
+mkpath("/home/buckelij/nwup", { mode => 0710, owner => "buckelij" });
+FetchFile(Source => "/jobs/nwup/backup.sh",
+  Dest   => "/home/buckelij/nwup/backup.sh",
+  Owner  => "buckelij",
+  Group  => "buckelij",
+  Mode   => "740",
+  Expand => "false",
+  Backup => "false"); 
+
+mkpath("/home/buckelij/.ssh", {mode => 0700, owner => "buckelij", group => "buckelij"});
+if ( ! -e "/home/buckelij/.ssh/id_dreamhost" || ! -e "/home/buckelij/nwup/mysql-pass" )
+{
+  print "please install id_dreamhost and nwup/mysql-pass and run the nwup backup once\n";
+} else {
+  my $cron = Cron->new();
+  $cron->add('buckelij', '@weekly /home/buckelij/nwup/backup.sh');
+}

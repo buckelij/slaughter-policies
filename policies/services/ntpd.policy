@@ -1,0 +1,5 @@
+if ( RunCommand( Cmd => "/usr/sbin/rcctl get ntpd status" ) >> 8 == 1 )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl set ntpd status on" );
+  RunCommand( Cmd => "/usr/sbin/rcctl start ntpd" );
+}

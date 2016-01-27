@@ -1,0 +1,18 @@
+print "running on $os\n";
+
+#Modules
+FetchModule "Cron.pm";
+
+#OpenBSD
+FetchPolicy "os/$os/roothome.policy";
+
+#be
+if ($hostname eq "be") {
+  FetchPolicy "buckelij.policy";
+  FetchPolicy "jobs/nwup.policy";
+  FetchPolicy "net/pf.policy";
+  FetchPolicy "services/httpd.policy";
+  FetchPolicy "services/ntpd.policy";
+  FetchPolicy "services/smtpd.policy";
+}
+

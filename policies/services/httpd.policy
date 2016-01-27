@@ -1,0 +1,28 @@
+if ( RunCommand( Cmd => "/usr/sbin/rcctl get httpd status" ) >> 8 == 1 )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl set httpd status on" );
+}
+
+#RunCommand( Cmd => "/usr/sbin/rcctl set slowcgi status on" );
+
+if ( FetchFile(Source => "/services/httpd.conf",
+  Dest   => "/etc/httpd.conf",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "644",
+  Expand => "false",
+  Backup => "false") )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl restart httpd" );
+}
+
+my @ideasyncratic_files = ('brain.jpg', 'index.html', 'resume.html');
+foreach (@ideasyncratic_files) {
+  FetchFile(Source => "/www/$_",
+    Dest => "/var/www/htdocs/$_",
+    Owner => "buckelij",
+    Group => "buckelij",
+    Mode => "644",
+    Expand => "false",
+    Backup => "false");
+}

@@ -1,0 +1,15 @@
+if (!PackageInstalled(Package => "mutt--")) {
+  InstallPackage(Package => "mutt--");
+}
+
+AppendIfMissing(File => "/home/buckelij/.profile",
+  Line => "export HISTFILE=~/.sh_history");
+
+mkpath("/home/buckelij/.mutt", {mode => 0760, owner => "buckelij", group => "buckelij"});
+FetchFile(Source => "/hosts/be/home/buckelij/dotfiles/muttrc",
+  Dest   => "/home/buckelij/.mutt/muttrc",
+  Owner  => "buckelij",
+  Group  => "buckelij",
+  Mode   => "740",
+  Expand => "false",
+  Backup => "false"); 
