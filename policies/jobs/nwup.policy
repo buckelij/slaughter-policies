@@ -3,8 +3,19 @@ if (!PackageInstalled(Package => "rsync--")) {
 }
 
 mkpath("/home/buckelij/nwup", { mode => 0710, owner => "buckelij" });
+
+#Backup script
 FetchFile(Source => "/jobs/nwup/backup.sh",
   Dest   => "/home/buckelij/nwup/backup.sh",
+  Owner  => "buckelij",
+  Group  => "buckelij",
+  Mode   => "740",
+  Expand => "false",
+  Backup => "false"); 
+
+#WordPress update checker
+FetchFile(Source => "/jobs/nwup/wordpress-check.sh",
+  Dest   => "/home/buckelij/nwup/wordpress-check.sh",
   Owner  => "buckelij",
   Group  => "buckelij",
   Mode   => "740",
@@ -18,4 +29,6 @@ if ( ! -e "/home/buckelij/.ssh/id_dreamhost" || ! -e "/home/buckelij/nwup/mysql-
 } else {
   my $cron = Cron->new();
   $cron->add('buckelij', '@weekly /home/buckelij/nwup/backup.sh');
+  $cron->add('buckelij', '@weekly /home/buckelij/nwup/wordpress-check.sh');
 }
+
