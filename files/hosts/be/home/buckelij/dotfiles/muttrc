@@ -15,17 +15,30 @@ auto_view text/html
 
 
 #---- Mutt Colors for White Background -------
-color    hdrdefault    black           default
-color    quoted        red             default
-color    signature     brightblack     default
-color    indicator     brightwhite     red
-color    attachment    black           default
-color    error         red             default
-color    message       black           default
-color    search        brightwhite     magenta
-color    status        brightyellow    blue
-color    tree          red             default
-color    normal        black            default
-color    tilde         green           default
-color    bold          brightyellow    default
-color    markers       red             default
+#color    hdrdefault    black           default
+#color    quoted        red             default
+#color    signature     brightblack     default
+#color    indicator     brightwhite     red
+#color    attachment    black           default
+#color    error         red             default
+#color    message       black           default
+#color    search        brightwhite     magenta
+#color    status        brightyellow    blue
+#color    tree          red             default
+#color    normal        black            default
+#color    tilde         green           default
+#color    bold          brightyellow    default
+#color    markers       red             default
+
+#solarized-ish
+color normal        brightblue      default         
+color error         red             default         
+color tilde         white           default         
+color message       cyan            default         
+color markers       red             black           
+color attachment    black           default         
+color search        brightmagenta   default         
+#color status        J_black         J_status        
+color status        brightblue      white           
+color indicator     brightwhite     yellow          
+color tree          yellow          default                                     # arrow in threads
