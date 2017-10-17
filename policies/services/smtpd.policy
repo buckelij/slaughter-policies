@@ -11,7 +11,7 @@ if ( RunCommand( Cmd => "/usr/sbin/rcctl check spamd" ) >> 8 == 1 )
   RunCommand( Cmd => "/usr/sbin/rcctl start spamd" );
 }
 
-#snmpd
+#smtpd
 
 if ( RunCommand( Cmd => "/usr/sbin/rcctl get smtpd status" ) >> 8 == 1 )
 {
@@ -40,3 +40,20 @@ if ( FetchFile(Source => "/services/mail/smtpd.conf",
   RunCommand( Cmd => "/usr/sbin/rcctl restart smtpd" );
 }
 
+
+if ( FetchFile(Source => "/services/mail/spamd.conf",
+  Dest   => "/etc/mail/spamd.conf",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "644",
+  Expand => "false",
+  Backup => "false") )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl restart spamd" );
+}
+
+my $cron = Cron->new();
+if ( $cron->check("root", "/usr/libexec/spamd-setup") == 0 )
+{
+  $cron->add("root", '0 * * * * sleep $((RANDOM \% 2048)) && /usr/libexec/spamd-setup');
+}
