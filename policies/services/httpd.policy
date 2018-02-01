@@ -16,6 +16,14 @@ if ( FetchFile(Source => "/services/httpd.conf",
   RunCommand( Cmd => "/usr/sbin/rcctl restart httpd" );
 }
 
+FetchFile(Source => "/services/acme-client.conf",
+  Dest   => "/etc/acme-client.conf",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "644",
+  Expand => "false",
+  Backup => "false");
+
 my @ideasyncratic_files = ('brain.jpg', 'index.html', 'resume.html');
 foreach (@ideasyncratic_files) {
   FetchFile(Source => "/www/$_",
