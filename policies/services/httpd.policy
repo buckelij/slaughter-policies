@@ -16,6 +16,8 @@ if ( FetchFile(Source => "/services/httpd.conf",
   RunCommand( Cmd => "/usr/sbin/rcctl restart httpd" );
 }
 
+# LetsEncrypt
+# you have to run `acme-client -vAD www.ideasyncratic.net` once to get going 
 FetchFile(Source => "/services/acme-client.conf",
   Dest   => "/etc/acme-client.conf",
   Owner  => "root",
@@ -24,6 +26,13 @@ FetchFile(Source => "/services/acme-client.conf",
   Expand => "false",
   Backup => "false");
 
+my $cron = Cron->new();
+if ( $cron->check("root", "acme-client www.ideasyncratic.net") == 0 )
+{
+  $cron->add("root", '1 0 * * * acme-client example.com && rcctl reload httpd');
+}
+
+# Web content
 my @ideasyncratic_files = ('brain.jpg', 'index.html', 'resume.html');
 foreach (@ideasyncratic_files) {
   FetchFile(Source => "/www/$_",
