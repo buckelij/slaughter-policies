@@ -29,7 +29,7 @@ FetchFile(Source => "/services/acme-client.conf",
 my $cron = Cron->new();
 if ( $cron->check("root", "acme-client www.ideasyncratic.net") == 0 )
 {
-  $cron->add("root", '1 0 * * * acme-client www.ideasyncratic.net && rcctl reload httpd');
+  $cron->add("root", '1 0 * * * acme-client www.ideasyncratic.net && rcctl reload httpd && rcctl reload relayd');
 }
 
 # Web content

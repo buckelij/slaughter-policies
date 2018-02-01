@@ -12,6 +12,7 @@ if ($hostname eq "be") {
   FetchPolicy "jobs/nwup.policy";
   FetchPolicy "net/pf.policy";
   FetchPolicy "services/httpd.policy";
+  FetchPolicy "services/relayd.policy";
   FetchPolicy "services/ntpd.policy";
   FetchPolicy "services/smtpd.policy";
 }

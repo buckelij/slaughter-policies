@@ -1,0 +1,22 @@
+# run relayd to TLS proxy 443 to 127.0.0.1:8888
+# useful to get a web server over SSH like `ssh -R 8888:127.0.0.1:8080 be.sif.io`
+
+if ( RunCommand( Cmd => "/usr/sbin/rcctl get relayd status" ) >> 8 == 1 )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl set relayd status on" );
+}
+
+if ( FetchFile(Source => "/services/relayd.conf",
+  Dest   => "/etc/relayd.conf",
+  Owner  => "root",
+  Group  => "wheel",
+  Mode   => "600",
+  Expand => "false",
+  Backup => "false") )
+{
+  RunCommand( Cmd => "/usr/sbin/rcctl restart relayd" );
+}
+
+# link in letsencrypt cert. Hard coding the IP, meh
+RunCommand( Cmd => "ln -sf /etc/ssl/www.ideasyncratic.net.crt /etc/ssl/209.141.49.251:443.crt" );
+RunCommand( Cmd => "ln -sf /etc/ssl/private/www.ideasyncratic.net.key /etc/ssl/private/209.141.49.251:443.key" );
