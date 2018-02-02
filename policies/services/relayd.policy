@@ -18,5 +18,6 @@ if ( FetchFile(Source => "/services/relayd.conf",
 }
 
 # link in letsencrypt cert. Hard coding the IP, meh
-RunCommand( Cmd => "ln -sf /etc/ssl/www.ideasyncratic.net.crt /etc/ssl/209.141.49.251:443.crt" );
+RunCommand( Cmd => "ln -sf /etc/ssl/www.ideasyncratic.net.fullchain.pem /etc/ssl/209.141.49.251:443.crt" );
 RunCommand( Cmd => "ln -sf /etc/ssl/private/www.ideasyncratic.net.key /etc/ssl/private/209.141.49.251:443.key" );
+RunCommand( Cmd => "/usr/sbin/rcctl restart relayd" );
