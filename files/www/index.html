@@ -1,21 +1,63 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Ideasyncratic</title>
+<style>
+.flex-container {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    text-align: left;
+}
+
+.flex-container > * {
+    padding: 15px;
+    -webkit-flex: 1 100%;
+    flex: 1 100%;
+}
+
+.article {
+    text-align: left;
+}
+
+header {background: white;color:black;}
+.nav {background:azure;}
+
+.nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+.nav ul a {
+    text-decoration: none;
+}
+
+@media all and (min-width: 768px) {
+    .nav {text-align:left;-webkit-flex: 1 auto;flex:1 auto;-webkit-order:1;order:1;}
+    .article {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
+    footer {-webkit-order:3;order:3;}
+}
+</style>
 </head>
 <body>
-  <table><tr>
-  <td>
-    <img src="brain.jpg" alt="image:MRI of my brain">
-  </td>
-  <td>
-   Elijah Buck <br>
-   elijah.buck [AT] gmail.com  or buckelij [AT] ideasyncratic.net <br>
-   <a href="resume.html">Résumé</a><br>
-   <a href="https://github.com/buckelij"> GitHub</a><br>
-  </td>
-</tr></table>
+
+<div class="flex-container">
+<header>
+  <h2>Elijah Buck</h2>
+</header>
+
+<nav class="nav">
+<ul>
+  <li><a href="resume.html">Resume</a><br></li>
+  <li><a href="https://github.com/buckelij">GitHub</a></li>
+</ul>
+</nav>
+
+<article class="article">
+  elijah.buck [AT] gmail.com </br>
+  buckelij [AT] ideasyncratic.net
+</article>
+
+</div>
+
 </body>
 </html>
-
