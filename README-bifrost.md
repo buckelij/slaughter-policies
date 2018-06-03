@@ -1,0 +1,133 @@
+# TODO
+ntpd
+
+cnmac0 - dhcp from cable modem
+cnmac1 - 192.168.0.1 - DHCP leases to airport wireless network
+vnet0  - 172.16.19.0/24 - guest wifi network
+cnmac2 - 172.16.24.24 - DHCP lease to airtraffic
+
+192.168.0.0/24
+
+
+echo 'net.inet.ip.forwarding=1' >> /etc/sysctl.conf
+
+rcctl enable dhcpd
+rcctl set dhcpd flags cnmac1 cnmac2 vlan0
+
+rcctl enable ntpd
+rcctl start ntpd
+
+
+
+there's an msdos fs that you need to copy new kernels to
+
+tail -n 99999 /etc/hostname.* /etc/dhcpd.conf /etc/pf.conf /etc/ntpd.conf >> /root/README.md
+
+
+
+
+
+==========================================================================================
+
+
+==> /etc/hostname.cnmac0 <==
+dhcp
+
+==> /etc/hostname.cnmac1 <==
+inet 192.168.0.1 255.255.255.0 192.168.0.255
+
+==> /etc/hostname.cnmac2 <==
+inet 172.16.24.1 255.255.255.0 172.16.24.255
+
+==> /etc/hostname.vlan0 <==
+parent cnmac1 vnetid 1003
+172.16.19.1/24
+
+==> /etc/dhcpd.conf <==
+subnet 192.168.0.1 netmask 255.255.255.0 {
+	option routers 192.168.0.1;
+	option domain-name-servers 8.8.8.8;
+	range 192.168.0.202 192.168.0.254;
+	host airport {
+		fixed-address 192.168.0.2;
+		hardware ethernet 6c:70:9f:d2:cd:b1;
+	}
+	host kibeth {
+		fixed-address 192.168.0.6;
+		hardware ethernet 80:e6:50:07:1f:98;
+	}
+	host brotherprinter {
+		fixed-address 192.168.0.80;
+		hardware ethernet 48:e2:44:b3:7d:2a;
+	}
+	host telly {
+		fixed-address 192.168.0.200;
+		hardware ethernet 7c:dd:90:86:5f:61;
+	}
+}
+
+subnet 172.16.19.1 netmask 255.255.255.0 {
+	option routers 172.16.19.1;
+	option domain-name-servers 8.8.8.8;
+	range 172.16.19.6 172.16.19.254;
+}
+
+subnet 172.16.24.1 netmask 255.255.255.0 {
+	option routers 172.16.24.1;
+	option domain-name-servers 8.8.8.8;
+	range 172.16.24.6 172.16.24.10;
+	host flighttracker {
+		fixed-address 172.16.24.24;
+		hardware ethernet d0:5f:b8:f9:bf:fd;
+	}
+}
+
+==> /etc/pf.conf <==
+#	$OpenBSD: pf.conf,v 1.55 2017/12/03 20:40:04 sthen Exp $
+#
+# See pf.conf(5) and /etc/examples/pf.conf
+
+wan = "cnmac0"
+home = "cnmac1"
+guest = "vlan0"
+flighttrack = "cnmac2"
+table <martians> { 0.0.0.0/8 10.0.0.0/8 127.0.0.0/8 169.254.0.0/16     \
+                   172.16.0.0/12 192.0.0.0/24 192.0.2.0/24 224.0.0.0/3 \
+                   192.168.0.0/16 198.18.0.0/15 198.51.100.0/24        \
+                   203.0.113.0/24 }
+
+set skip on lo
+
+block return	# block stateless traffic
+pass		# establish keep-state
+
+# By default, do not permit remote connections to X11
+block return in on ! lo0 proto tcp to port 6000:6010
+
+# Port build user does not need network
+block return out log proto {tcp udp} user _pbuild
+
+# block guest access to home network
+block in quick from 172.16.19.0/24 to 192.168.0.0/24
+
+# block flighttracker access to home and guest
+block in quick from 172.16.24.0/24 to 192.168.0.0/24
+block in quick from 172.16.24.0/24 to 172.16.19.0/24
+
+match in all scrub (no-df random-id max-mss 1440)
+match out on egress inet from !(egress:network) to any nat-to (egress:0)
+antispoof quick for { egress $home $guest $flighttrack }
+block in quick on egress from <martians> to any
+block return out quick on egress from any to <martians>
+block all
+pass out quick inet
+pass in on { $home $guest $flighttrack } inet
+
+==> /etc/ntpd.conf <==
+# $OpenBSD: ntpd.conf,v 1.14 2015/07/15 20:28:37 ajacoutot Exp $
+#
+# See ntpd.conf(5) and /etc/examples/ntpd.conf
+
+servers pool.ntp.org
+sensor *
+constraints from "https://www.google.com"
