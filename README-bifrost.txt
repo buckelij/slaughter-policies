@@ -32,6 +32,10 @@ rcctl enable rtadvd
 rcctl set rtadvd flags cnmac1
 rcctl start rtadvd
 
+#lol netflix doesn't allow access through hurricance eletric
+rcctl disable rtadvd
+rcctl stop rtadvd
+
 
 
 ==========================================================================================
