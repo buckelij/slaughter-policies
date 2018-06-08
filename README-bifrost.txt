@@ -24,7 +24,6 @@ there's an msdos fs that you need to copy new kernels to
 
 the "tunnelbroker" dir here has a script to keep the hurricane electrice ipv6 tunnel up
 
-tail -n 99999 /etc/sysctl.conf /etc/hostname.* /etc/dhcpd.conf /etc/pf.conf /etc/ntpd.conf /etc/rtadvd.conf >> README-bifrost.txt
 
 #ipv6
 echo 'net.inet6.ip6.forwarding=1' >> /etc/sysctl.conf
@@ -36,9 +35,10 @@ rcctl start rtadvd
 rcctl disable rtadvd
 rcctl stop rtadvd
 
+=============================================================
+tail -n 99999 /etc/sysctl.conf /etc/hostname.* /etc/dhcpd.conf /etc/pf.conf /etc/ntpd.conf /etc/rtadvd.conf >> README-bifrost.txt
 
-
-==========================================================================================
+==============================================================
 ==> /etc/sysctl.conf <==
 net.inet.ip.forwarding=1
 net.inet6.ip6.forwarding=1 
@@ -48,6 +48,7 @@ dhcp
 
 ==> /etc/hostname.cnmac1 <==
 inet 192.168.0.1 255.255.255.0 192.168.0.255
+inet6 alias 2001:470:eb31::1 48
 
 ==> /etc/hostname.cnmac2 <==
 inet 172.16.24.1 255.255.255.0 172.16.24.255
