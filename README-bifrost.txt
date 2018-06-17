@@ -17,27 +17,46 @@ rcctl set dhcpd flags cnmac1 cnmac2 vlan0
 rcctl enable ntpd
 rcctl start ntpd
 
-
+#/usr/src is an nfs mount
+mount_nfs -is 192.168.0.199:/home /usr/src
 
 there's an msdos fs that you need to copy new kernels to
 
-tail -n 99999 /etc/hostname.* /etc/dhcpd.conf /etc/pf.conf /etc/ntpd.conf >> /root/README.md
+the "tunnelbroker" dir here has a script to keep the hurricane electrice ipv6 tunnel up
 
 
+#ipv6
+echo 'net.inet6.ip6.forwarding=1' >> /etc/sysctl.conf
+rcctl enable rtadvd
+rcctl set rtadvd flags cnmac1
+rcctl start rtadvd
 
+#lol netflix doesn't allow access through hurricance eletric
+rcctl disable rtadvd
+rcctl stop rtadvd
 
+=============================================================
+tail -n 99999 /etc/sysctl.conf /etc/hostname.* /etc/dhcpd.conf /etc/pf.conf /etc/ntpd.conf /etc/rtadvd.conf >> README-bifrost.txt
 
-==========================================================================================
-
+==============================================================
+==> /etc/sysctl.conf <==
+net.inet.ip.forwarding=1
+net.inet6.ip6.forwarding=1 
 
 ==> /etc/hostname.cnmac0 <==
 dhcp
 
 ==> /etc/hostname.cnmac1 <==
 inet 192.168.0.1 255.255.255.0 192.168.0.255
+inet6 alias 2001:470:eb31::1 48
 
 ==> /etc/hostname.cnmac2 <==
 inet 172.16.24.1 255.255.255.0 172.16.24.255
+
+==> /etc/hostname.gif0 <==
+tunnel 71.95.120.119 216.218.226.238
+!ifconfig gif0 inet6 alias 2001:470:a:76e::2 2001:470:a:76e::1 prefixlen 128
+!route -n add -inet6 default 2001:470:a:76e::1
 
 ==> /etc/hostname.vlan0 <==
 parent cnmac1 vnetid 1003
@@ -91,6 +110,7 @@ wan = "cnmac0"
 home = "cnmac1"
 guest = "vlan0"
 flighttrack = "cnmac2"
+v6tun = "gif0"
 table <martians> { 0.0.0.0/8 10.0.0.0/8 127.0.0.0/8 169.254.0.0/16     \
                    172.16.0.0/12 192.0.0.0/24 192.0.2.0/24 224.0.0.0/3 \
                    192.168.0.0/16 198.18.0.0/15 198.51.100.0/24        \
@@ -121,7 +141,15 @@ block in quick on egress from <martians> to any
 block return out quick on egress from any to <martians>
 block all
 pass out quick inet
+pass out quick inet6
 pass in on { $home $guest $flighttrack } inet
+pass in on { $home } inet6
+
+#tunnelbroker
+pass in proto 41 from 66.220.2.74 to $wan keep state
+pass out proto 41 from $wan to 66.220.2.74 keep state
+pass inet proto icmp from 66.220.2.74 to $wan
+
 
 ==> /etc/ntpd.conf <==
 # $OpenBSD: ntpd.conf,v 1.14 2015/07/15 20:28:37 ajacoutot Exp $
@@ -131,3 +159,7 @@ pass in on { $home $guest $flighttrack } inet
 servers pool.ntp.org
 sensor *
 constraints from "https://www.google.com"
+
+==> /etc/rtadvd.conf <==
+cnmac1:\
+	:addr="2001:470:eb31::":prefixlen#64:
