@@ -150,6 +150,9 @@ pass in proto 41 from 66.220.2.74 to $wan keep state
 pass out proto 41 from $wan to 66.220.2.74 keep state
 pass inet proto icmp from 66.220.2.74 to $wan
 
+#bufferbloat
+queue outq on cnmac0 flows 1024 bandwidth 6M max 5M qlimit 1024 default
+queue inq on cnmac1 flows 1024 bandwidth 65M max 60M qlimit 1024 default
 
 ==> /etc/ntpd.conf <==
 # $OpenBSD: ntpd.conf,v 1.14 2015/07/15 20:28:37 ajacoutot Exp $
