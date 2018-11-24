@@ -29,6 +29,17 @@ if ( FetchFile(Source => "/services/mail/ideasyncratic",
   RunCommand( Cmd => "/usr/sbin/makemap -t aliases /etc/mail/ideasyncratic" );
 }
 
+if ( ! -e "/etc/mail/sgauth" )
+{
+  RunCommand( Cmd => "echo "apikey STUB" > /etc/mail/sgauth" );
+  print "please set sendgrid apikey in /etc/mail/sgauth\n";
+}
+elsif ( RunCommand( Cmd => "/usr/bin/grep 'apikey STUB' /etc/mail/sgauth" ) >> 8 == 0 )
+{
+  print "please set sendgrid apikey in /etc/mail/sgauth\n";
+
+}
+
 if ( FetchFile(Source => "/services/mail/smtpd.conf",
   Dest   => "/etc/mail/smtpd.conf",
   Owner  => "root",
