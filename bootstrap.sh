@@ -7,7 +7,6 @@ fi
 
 cd /root
 
-export PKG_PATH=http://ftp5.usa.openbsd.org/pub/OpenBSD/`uname -r`/packages/amd64/
 pkg_add -I p5-libwww
 pkg_add -I git
 
