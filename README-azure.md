@@ -45,32 +45,39 @@ $backendAddressPoolV6 = az network lb address-pool create --resource-group $rgna
 $probeV4V6 = az network lb probe create --resource-group $rgname `
                --name BeProbeForIPv4AndIPv6 --protocol tcp --port 22 `
                --interval 15 --threshold 2 --lb-name $lbName
-
-$lbruleIPv4 = az network lb rule create --resource-group $rgname `
+## v4 ports
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv4-Port22 --frontend-ip-name $frontendV4Name --backend-pool-name $backendAddressPoolV4Name `
                 --probe-name BeProbeFordIPv4AndIPv6 --protocol Tcp --frontend-port 22 --backend-port 22 --lb-name $lbName
-$lbruleIPv4 = az network lb rule create --resource-group $rgname `
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv4-Port25 --frontend-ip-name $frontendV4Name --backend-pool-name $backendAddressPoolV4Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 25 --backend-port 25 --lb-name $lbName
-$lbruleIPv4 = az network lb rule create --resource-group $rgname `
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv4-Port80 --frontend-ip-name $frontendV4Name --backend-pool-name $backendAddressPoolV4Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 80 --backend-port 80 --lb-name $lbName
-$lbruleIPv4 = az network lb rule create --resource-group $rgname `
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv4-Port443 --frontend-ip-name $frontendV4Name --backend-pool-name $backendAddressPoolV4Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 443 --backend-port 443 --lb-name $lbName
+az network lb rule create --resource-group $rgname `
+                --name LBRuleForIPv4-Port8443 --frontend-ip-name $frontendV4Name --backend-pool-name $backendAddressPoolV4Name `
+                --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 8443 --backend-port 8443 --lb-name $lbName
 
-$lbruleIPv6 = az network lb rule create --resource-group $rgname `
+## v6 ports
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv6-Port22 --frontend-ip-name $frontendV6Name --backend-pool-name $backendAddressPoolV6Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 22 --backend-port 22 --lb-name $lbName
-$lbruleIPv6 = az network lb rule create --resource-group $rgname `
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv6-Port25 --frontend-ip-name $frontendV6Name --backend-pool-name $backendAddressPoolV6Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 25 --backend-port 25 --lb-name $lbName
-$lbruleIPv6 = az network lb rule create --resource-group $rgname `
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv6-Port80 --frontend-ip-name $frontendV6Name --backend-pool-name $backendAddressPoolV6Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 80 --backend-port 80 --lb-name $lbName
-$lbruleIPv6 = az network lb rule create --resource-group $rgname `
+az network lb rule create --resource-group $rgname `
                 --name LBRuleForIPv6-Port443 --frontend-ip-name $frontendV6Name --backend-pool-name $backendAddressPoolV6Name `
                 --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 443 --backend-port 443 --lb-name $lbName
+az network lb rule create --resource-group $rgname `
+                --name LBRuleForIPv6-Port8443 --frontend-ip-name $frontendV6Name --backend-pool-name $backendAddressPoolV6Name `
+                --probe-name BeProbeForIPv4AndIPv6 --protocol Tcp --frontend-port 8443 --backend-port 8443 --lb-name $lbName
 
 az network lb show --resource-group $rgName --name $lbName
 
