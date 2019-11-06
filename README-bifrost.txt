@@ -44,7 +44,10 @@ net.inet.ip.forwarding=1
 net.inet6.ip6.forwarding=1 
 
 ==> /etc/hostname.cnmac0 <==
-dhcp
+inet 206.126.16.146 255.255.255.252
+
+==> /etc/mygate <==
+206.126.16.145
 
 ==> /etc/hostname.cnmac1 <==
 inet 192.168.0.1 255.255.255.0 192.168.0.255
