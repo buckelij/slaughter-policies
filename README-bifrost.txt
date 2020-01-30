@@ -20,7 +20,8 @@ rcctl start ntpd
 #/usr/src is an nfs mount
 mount_nfs -is 192.168.0.199:/home /usr/src
 
-there's an msdos fs that you need to copy new kernels to
+* there's an msdos fs at /dev/sd0i that you need to copy new kernels to
+* Access the serial console from a mac with `sudo screen /dev/cu.usbserial* 115200`. If it's garabled or you get a resource busy error, unplug and replug the usb adaptor.
 
 the "tunnelbroker" dir here has a script to keep the hurricane electrice ipv6 tunnel up
 
