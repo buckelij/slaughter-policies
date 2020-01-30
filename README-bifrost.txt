@@ -64,7 +64,7 @@ tunnel 71.95.120.119 216.218.226.238
 !route -n add -inet6 default 2001:470:a:76e::1
 
 ==> /etc/hostname.vlan0 <==
-parent cnmac1 vnetid 1003
+parent cnmac1 vnetid 1733
 172.16.19.1/24
 
 ==> /etc/dhcpd.conf <==
