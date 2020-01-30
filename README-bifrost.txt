@@ -72,10 +72,14 @@ subnet 192.168.0.1 netmask 255.255.255.0 {
 	option routers 192.168.0.1;
 	option domain-name-servers 8.8.8.8;
 	range 192.168.0.202 192.168.0.254;
-	host airport {
-		fixed-address 192.168.0.2;
-		hardware ethernet 6c:70:9f:d2:cd:b1;
-	}
+        host synology {
+                fixed-address 192.168.0.2;
+                hardware ethernet 01:00:11:32:bf:b3:66;
+        }
+        host airport {
+                fixed-address 192.168.0.12;
+                hardware ethernet 6c:70:9f:d2:cd:b1;
+        }
 	host kibeth {
 		fixed-address 192.168.0.6;
 		hardware ethernet 80:e6:50:07:1f:98;
